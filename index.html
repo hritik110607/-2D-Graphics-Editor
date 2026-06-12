@@ -5,192 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hritik Anand | Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Outfit', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; }
-        
-        /* Animations */
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
-        @keyframes glow { 0% { box-shadow: 0 0 5px #06b6d4; } 50% { box-shadow: 0 0 20px #8b5cf6; } 100% { box-shadow: 0 0 5px #06b6d4; } }
-        
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #030712;
+            color: #ffffff;
+            overflow-x: hidden;
         }
-        
-        .gradient-text {
-            background: linear-gradient(to right, #22d3ee, #a78bfa);
+
+        /* Animated Background */
+        .bg-grid {
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+        }
+        @keyframes grid-move { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
+
+        /* Glow Orbs */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Glass Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 50%, #f472b6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        
-        .hero-glow {
-            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            background-clip: text;
         }
 
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .float { animation: float 6s ease-in-out infinite; }
+        .float-delay { animation: float 8s ease-in-out infinite; animation-delay: 1s; }
+
+        /* Typing Cursor */
         .typing-cursor::after {
             content: '|';
-            animation: blink 1s infinite;
+            animation: blink 1s step-end infinite;
+            color: #22d3ee;
         }
-        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        .skill-bar { transition: width 1.5s ease-in-out; }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #22d3ee, #a78bfa);
+            border-radius: 3px;
+        }
+
+        /* Skill Bar Animation */
+        .skill-fill {
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Button Glow */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-glow:hover::before { left: 100%; }
+
+        /* Counter Animation */
+        .counter { font-variant-numeric: tabular-nums; }
+
+        /* Project Card Hover */
+        .project-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .project-card:hover {
+            transform: scale(1.02) translateY(-10px);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-white overflow-x-hidden">
+<body class="bg-[#030712] text-white min-h-screen">
 
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 bg-slate-950/80 backdrop-blur-lg border-b border-white/5">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 bg-grid -z-20"></div>
+    <div class="glow-orb w-[500px] h-[500px] bg-cyan-500/20 top-[-10%] left-[-10%]"></div>
+    <div class="glow-orb w-[400px] h-[400px] bg-purple-500/20 top-[60%] right-[-10%]"></div>
+    <div class="glow-orb w-[300px] h-[300px] bg-pink-500/10 bottom-[-5%] left-[30%]"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold gradient-text">Hritik Anand</div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#home" class="text-gray-300 hover:text-cyan-400 transition">Home</a>
-                <a href="#about" class="text-gray-300 hover:text-cyan-400 transition">About</a>
-                <a href="#education" class="text-gray-300 hover:text-cyan-400 transition">Education</a>
-                <a href="#skills" class="text-gray-300 hover:text-cyan-400 transition">Skills</a>
-                <a href="#projects" class="text-gray-300 hover:text-cyan-400 transition">Projects</a>
-                <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition">Contact</a>
+            <a href="#home" class="text-2xl font-bold tracking-tight">
+                <span class="text-gradient">Hritik.</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#home" class="text-sm text-gray-400 hover:text-white transition">Home</a>
+                <a href="#about" class="text-sm text-gray-400 hover:text-white transition">About</a>
+                <a href="#education" class="text-sm text-gray-400 hover:text-white transition">Education</a>
+                <a href="#skills" class="text-sm text-gray-400 hover:text-white transition">Skills</a>
+                <a href="#projects" class="text-sm text-gray-400 hover:text-white transition">Projects</a>
+                <a href="#contact" class="px-5 py-2 bg-white text-black text-sm font-semibold rounded-full hover:bg-cyan-50 transition">
+                    Contact Me
+                </a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20">
-        <div class="absolute inset-0 hero-glow"></div>
-        <div class="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-[100px]"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <div class="text-center md:text-left">
-                <div class="inline-block px-4 py-1 mb-4 rounded-full bg-white/5 border border-cyan-500/30 text-cyan-400 text-sm">
-                    First Year CSIT Student @ REVA University
+    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm mb-6">
+                    <span class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                    First Year CSIT Student
                 </div>
-                <h1 class="text-5xl md:text-7xl font-bold mb-2">Hritik <span class="gradient-text">Anand</span></h1>
-                <p class="text-xl text-gray-400 mb-2">SRN: R25EJ042</p>
-                <p class="text-lg text-gray-300 mb-6">B.Tech Computer Science & Information Technology</p>
                 
-                <div class="h-8 mb-8 text-left">
-                    <span id="typing-text" class="text-gray-300 typing-cursor"></span>
+                <h1 class="text-5xl lg:text-7xl font-bold mb-4 leading-tight">
+                    Hi, I'm <br>
+                    <span class="text-gradient">Hritik Anand</span>
+                </h1>
+                
+                <p class="text-xl text-gray-400 mb-2 font-medium">SRN: R25EJ042</p>
+                <p class="text-lg text-gray-500 mb-6">B.Tech CSIT @ REVA University</p>
+
+                <div class="h-10 mb-8 text-left">
+                    <p class="text-gray-300 typing-cursor text-lg" id="typing-text"></p>
                 </div>
 
-                <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                    <a href="#" class="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        Download Resume
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                    <a href="#" class="btn-glow px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white font-semibold rounded-full hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-all flex items-center gap-2">
+                        <i data-lucide="download" class="w-5 h-5"></i> Download Resume
                     </a>
-                    <a href="#projects" class="px-8 py-3 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition">View Projects</a>
-                    <a href="#contact" class="px-8 py-3 rounded-full border border-white/20 text-white font-semibold hover:bg-white/10 transition">Contact Me</a>
+                    <a href="#projects" class="px-8 py-4 glass-card text-white font-semibold rounded-full hover:bg-white/10 transition-all">
+                        View Projects
+                    </a>
+                    <a href="#contact" class="px-8 py-4 glass-card text-white font-semibold rounded-full hover:bg-white/10 transition-all">
+                        Contact Me
+                    </a>
                 </div>
             </div>
-            
-            <!-- Abstract Visual -->
-            <div class="hidden md:flex justify-center items-center relative">
-                <div class="w-80 h-80 rounded-full border-4 border-slate-800 flex items-center justify-center relative animate-[float_6s_ease-in-out_infinite]">
-                    <div class="w-64 h-64 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="w-32 h-32 mx-auto rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-5xl font-bold shadow-inner">
-                                HA
+
+            <div class="order-1 lg:order-2 flex justify-center items-center relative">
+                <!-- Floating Elements -->
+                <div class="relative">
+                    <div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full border border-white/10 flex items-center justify-center relative float">
+                        <div class="absolute inset-0 rounded-full border-2 border-dashed border-cyan-500/30 animate-[spin_20s_linear_infinite]"></div>
+                        <div class="w-56 h-56 lg:w-72 lg:h-72 rounded-full bg-gradient-to-br from-slate-900 to-slate-800 border border-white/20 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-32 h-32 lg:w-40 lg:h-40 mx-auto rounded-full bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 flex items-center justify-center text-4xl lg:text-5xl font-bold shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+                                    HA
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="absolute top-10 right-0 p-4 bg-slate-800 rounded-lg text-cyan-400 animate-[float_4s_ease-in-out_infinite]">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                </div>
-                <div class="absolute bottom-10 left-0 p-4 bg-slate-800 rounded-lg text-purple-400 animate-[float_5s_ease-in-out_infinite]">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path></svg>
+                    
+                    <!-- Floating Icons -->
+                    <div class="absolute -top-4 -right-4 lg:top-0 lg:right-0 p-4 glass-card rounded-xl float">
+                        <i data-lucide="code" class="w-8 h-8 text-cyan-400"></i>
+                    </div>
+                    <div class="absolute top-1/4 -left-8 lg:-left-12 p-4 glass-card rounded-xl float-delay">
+                        <i data-lucide="brain" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <div class="absolute -bottom-4 right-1/4 p-4 glass-card rounded-xl float">
+                        <i data-lucide="database" class="w-8 h-8 text-pink-400"></i>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+            <span class="text-xs text-gray-500">Scroll Down</span>
+            <i data-lucide="chevrons-down" class="w-5 h-5 text-gray-400"></i>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-slate-900/50">
+    <section id="about" class="py-24 relative">
         <div class="max-w-4xl mx-auto px-6">
-            <div class="glass rounded-2xl p-8 md:p-12">
-                <h2 class="text-3xl font-bold mb-6">About Me</h2>
-                <p class="text-gray-300 leading-relaxed text-lg">
-                    I am Hritik Anand, a dedicated Computer Science and Information Technology student at REVA University. I am passionate about solving real-world problems using technology and continuously expanding my knowledge in Software Development, Artificial Intelligence, Data Science, Machine Learning, and IoT. I enjoy building innovative projects, exploring new technologies, and contributing to the ever-evolving world of computer science. My goal is to become a skilled software engineer and technology innovator capable of creating impactful solutions for society.
+            <div class="glass-card rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px]"></div>
+                
+                <h2 class="text-3xl lg:text-4xl font-bold mb-6 flex items-center gap-3">
+                    <i data-lucide="user" class="w-8 h-8 text-cyan-400"></i>
+                    About Me
+                </h2>
+                
+                <p class="text-gray-300 leading-relaxed text-lg mb-6">
+                    I am <span class="text-white font-semibold">Hritik Anand</span>, a dedicated Computer Science and Information Technology student at <span class="text-cyan-400">REVA University</span>. I am passionate about solving real-world problems using technology and continuously expanding my knowledge in <span class="text-purple-400">Software Development</span>, <span class="text-purple-400">Artificial Intelligence</span>, <span class="text-purple-400">Data Science</span>, <span class="text-purple-400">Machine Learning</span>, and <span class="text-purple-400">IoT</span>.
                 </p>
+                <p class="text-gray-300 leading-relaxed text-lg">
+                    I enjoy building innovative projects, exploring new technologies, and contributing to the ever-evolving world of computer science. My goal is to become a skilled software engineer and technology innovator capable of creating impactful solutions for society.
+                </p>
+
+                <div class="flex flex-wrap gap-4 mt-8">
+                    <div class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300">
+                        <i data-lucide="code" class="w-4 h-4 inline mr-2"></i>Coding
+                    </div>
+                    <div class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300">
+                        <i data-lucide="brain" class="w-4 h-4 inline mr-2"></i>AI/ML
+                    </div>
+                    <div class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300">
+                        <i data-lucide="cpu" class="w-4 h-4 inline mr-2"></i>IoT
+                    </div>
+                    <div class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300">
+                        <i data-lucide="database" class="w-4 h-4 inline mr-2"></i>Data Science
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="py-20">
+    <section id="education" class="py-24 bg-black/20">
         <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">Education</h2>
+            <h2 class="text-3xl lg:text-4xl font-bold text-center mb-16">
+                <span class="text-gradient">Education</span> Journey
+            </h2>
+            
             <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass p-6 rounded-xl hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-2">
-                    <div class="flex items-start gap-4">
-                        <div class="p-3 bg-cyan-500/20 rounded-lg text-cyan-400">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                <!-- Engineering -->
+                <div class="glass-card p-8 rounded-2xl relative group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/20 rounded-full blur-[40px] group-hover:bg-cyan-500/30 transition"></div>
+                    
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="p-4 bg-cyan-500/20 rounded-xl text-cyan-400">
+                            <i data-lucide="graduation-cap" class="w-8 h-8"></i>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-bold">Bachelor of Technology</h3>
-                            <p class="text-gray-400">REVA University</p>
-                            <p class="text-sm text-cyan-400 mt-2">Computer Science & Information Technology</p>
-                            <p class="text-sm text-gray-500">Currently Pursuing (1st Year)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass p-6 rounded-xl hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-2">
-                    <div class="flex items-start gap-4">
-                        <div class="p-3 bg-purple-500/20 rounded-lg text-purple-400">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold">Class 12 (PUC)</h3>
-                            <p class="text-gray-400">St. Joseph's PU College</p>
-                            <p class="text-sm text-green-400 mt-2">87% (Distinction)</p>
-                            <p class="text-sm text-gray-500">Science Stream</p>
+                        <div class="flex-1">
+                            <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 text-xs rounded-full">Currently Pursuing</span>
                         </div>
                     </div>
+                    
+                    <h3 class="text-xl font-bold mb-1">Bachelor of Technology</h3>
+                    <p class="text-gray-400 mb-2">Computer Science & Information Technology</p>
+                    <p class="text-cyan-400 font-semibold">REVA University</p>
+                    <p class="text-gray-500 text-sm mt-2">1st Year (2nd Semester)</p>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-slate-900/50">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">Technical Skills</h2>
-            <div class="space-y-6">
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">Python</span><span class="text-cyan-400">90%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full" data-width="90%" style="width: 0%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">C / C++</span><span class="text-cyan-400">85%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full" data-width="85%" style="width: 0%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">Data Structures & Algorithms</span><span class="text-cyan-400">75%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full" data-width="75%" style="width: 0%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">Machine Learning</span><span class="text-cyan-400">70%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full" data-width="70%" style="width: 0%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">Data Science</span><span class="text-cyan-400">75%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-cyan-500 to-cyan-400 rounded-full" data-width="75%" style="width: 0%"></div></div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-2"><span class="text-gray-300 font-medium">SQL</span><span class="text-cyan-400">80%</span></div>
-                    <div class="h-2 bg-slate-700 rounded-full"><div class="skill-bar h-full bg-gradient-to-r from-purple-500 to-purple-400 rounded-full" data-width="80%" style="width: 0%"></div></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-20">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3
+                <!-- PU College -->
+                <div class="glass-card p-8 rounded-2xl relative group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/20 rounded-full blur-[40px] group-hover:bg-purple-500/30 transition"></div>
+                    
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="p-4 bg-purple-500/20 rounded-xl text-purple-400">
+                            <i data-lucide="book-open" class="w-8 h-8"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">Completed</span>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-1">Class 12 (2nd PUC)</h3>
+                    <p class="text-gray-400 mb-2">Science Stream (PCMB)</p>
+                    <p class="text-purple-400 font-semibold">Narayana PU College</p>
+                    
+                    <div class="flex items-center gap-4 mt-4">
+                        <div class="text-center">
+                            <p class="text-3xl font-bold text-white counter" data-target="87">0</p>
+                            <p class="text-sm text-gray-500">Percentage</p>
+                        </div>
+                        <div class="h-
